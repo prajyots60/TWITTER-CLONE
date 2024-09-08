@@ -1,3 +1,11 @@
 npm install express mongoose jsonwebtoken bcryptjs dotenv cors cookie-parser cloudinary
 
 npm i -D nodemon
+
+// FRONTEND
+
+install tailwind
+
+npm i -D daisyui@latest
+
+ npm install react-router-dom react-icons
