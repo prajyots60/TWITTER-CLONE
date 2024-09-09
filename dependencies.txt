@@ -9,3 +9,10 @@ install tailwind
 npm i -D daisyui@latest
 
  npm install react-router-dom react-icons
+
+// install react-query for data fetching
+ npm i @tanstack/react-query
+
+// install react-toastify for toast notifications
+
+npm install react-hot-toast
