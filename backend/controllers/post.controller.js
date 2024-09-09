@@ -2,40 +2,39 @@ import User from "../models/user.model.js";
 import Post from "../models/post.model.js";
 import {v2 as cloudinary} from 'cloudinary';
 import Notification from "../models/notification.model.js";
-import e from "express";
 
-export const createPost = async (req , res) => {
-  try {
-    const { text , image } = req.body;
-    let {img} = req.body;
-    const userId = req.user._id.toString();
+export const createPost = async (req, res) => {
+	try {
+		const { text } = req.body;
+		let { img } = req.body;
+		const userId = req.user._id.toString();
 
-    const user = await User.findById(userId)
-    if(!user) return res.status(404).json({message: "User not found"});
+		const user = await User.findById(userId);
+		if (!user) return res.status(404).json({ message: "User not found" });
 
-    if(!text && !image) return res.status(400).json({message: "Text or image is required"});
+		if (!text && !img) {
+			return res.status(400).json({ error: "Post must have text or image" });
+		}
 
-    if(image) {
-      const uploadedResponse = await cloudinary.uploader.upload(img);
-      img = uploadedResponse.secure_url;
+		if (img) {
+			const uploadedResponse = await cloudinary.uploader.upload(img);
+      console.log(uploadedResponse);
+			img = uploadedResponse.secure_url;
+		}
 
-    }
+		const newPost = new Post({
+			user: userId,
+			text,
+			img,
+		});
 
-    const newPost = new Post({
-      user: userId,
-      text,
-      img
-    })
-
-    await newPost.save();
-    res.status(201).json(newPost);
-
-    
-  } catch (error) {
-    res.status(500).json({error: error.message});
-    console.log("Error in createPost controller", error);
-  }
-}
+		await newPost.save();
+		res.status(201).json(newPost);
+	} catch (error) {
+		res.status(500).json({ error: "Internal server error" });
+		console.log("Error in createPost controller: ", error);
+	}
+};
 
 export const deletePost = async (req , res) => {
   try {

@@ -36,17 +36,13 @@ const CreatePost = () => {
 			}
 		},
 		onSuccess: () => {
-			toast.success("Post created successfully");
-			queryClient.invalidateQueries({queryKey: ["posts"]});
 			setText("");
 			setImg(null);
+			toast.success("Post created successfully");
+			queryClient.invalidateQueries({queryKey: ["posts"]});
+
 		}
 	})
-
-
-
-
-
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		createPost({text, img});
